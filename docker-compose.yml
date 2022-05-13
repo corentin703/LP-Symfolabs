@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_lp-web
+    restart: always
+    command: ['--default-authentication-plugin=mysql_native_password']
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: lp_web
+      MYSQL_PASSWORD: lp_web
+    networks:
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_lp-web
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+    networks:
+      - dev
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev_lp-web
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    ports:
+      - "8082:80"
+    restart: always
+    networks:
+      - dev
+
+  web:
+    build: .docker/php
+    container_name: web_lp-web
+    ports:
+      - "80:80"
+    volumes:
+      - ./.docker/php/vhosts:/etc/apache2/sites-enabled
+      - .:/var/www/lp-web
+    restart: always
+    networks:
+      - dev
+networks:
+  dev:
+
+volumes:
+  db-data:
