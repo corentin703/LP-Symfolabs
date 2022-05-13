@@ -20,68 +20,68 @@ class Promotion
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $content;
+    private ?string $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $discount;
+    private ?string $discount;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private ?\DateTimeInterface $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $start_at;
+    private ?\DateTimeInterface $start_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $expires_at;
+    private ?\DateTimeInterface $expires_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $became_hot_at;
+    private ?\DateTimeInterface $became_hot_at;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $delivery_fees;
+    private ?float $delivery_fees;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $company;
+    private ?string $company;
 
     /**
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="promotion", orphanRemoval=true)
      */
-    private $temperatures;
+    private ArrayCollection $temperatures;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="promotion", orphanRemoval=true)
      */
-    private $comments;
+    private ArrayCollection $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private ?User $author;
 
     public function __construct()
     {

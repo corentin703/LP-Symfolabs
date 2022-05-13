@@ -19,43 +19,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private ?string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $pseudo;
+    private ?string $pseudo;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", orphanRemoval=true)
      */
-    private $comments;
+    private ArrayCollection $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="user", orphanRemoval=true)
      */
-    private $temperatures;
+    private ArrayCollection $temperatures;
 
     /**
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="author", orphanRemoval=true)
      */
-    private $promotions;
+    private ArrayCollection $promotions;
 
     public function __construct()
     {

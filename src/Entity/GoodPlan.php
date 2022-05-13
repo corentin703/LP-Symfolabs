@@ -13,7 +13,7 @@ class GoodPlan extends Promotion
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $link;
+    private ?string $link;
 
     public function getLink(): ?string
     {

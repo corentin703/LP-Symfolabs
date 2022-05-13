@@ -15,19 +15,19 @@ class Temperature
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="discount")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private ?User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="temperatures")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $promotion;
+    private ?Promotion $promotion;
 
     public function getId(): ?int
     {

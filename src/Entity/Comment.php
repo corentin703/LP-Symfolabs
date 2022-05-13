@@ -15,24 +15,24 @@ class Comment
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $content;
+    private ?string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private ?User $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $promotion;
+    private ?Promotion $promotion;
 
     public function getId(): ?int
     {
