@@ -45,17 +45,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", orphanRemoval=true)
      */
-    private ArrayCollection $comments;
+    private Collection $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="user", orphanRemoval=true)
      */
-    private ArrayCollection $temperatures;
+    private Collection $temperatures;
 
     /**
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="author", orphanRemoval=true)
      */
-    private ArrayCollection $promotions;
+    private Collection $promotions;
 
     public function __construct()
     {
