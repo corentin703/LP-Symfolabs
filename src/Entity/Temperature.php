@@ -18,7 +18,7 @@ class Temperature
     private ?int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="discount")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="temperatures")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $user;
@@ -28,6 +28,11 @@ class Temperature
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Promotion $promotion;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $positive;
 
     public function getId(): ?int
     {
@@ -54,6 +59,18 @@ class Temperature
     public function setPromotion(?Promotion $promotion): self
     {
         $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getPositive(): ?bool
+    {
+        return $this->positive;
+    }
+
+    public function setPositive(bool $positive): self
+    {
+        $this->positive = $positive;
 
         return $this;
     }
