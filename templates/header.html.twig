@@ -36,7 +36,10 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if app.user == null %}
                     <li class="nav-item">
-                        <a class="nav-link {{ route == 'login' ? 'active' : '' }}" href="{{ path('login') }}">Connexion</a>
+                        <a class="nav-link {{ route == 'auth' ? 'active' : '' }}" href="{{ path('auth') }}">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ route == 'register' ? 'active' : '' }}" href="{{ path('register') }}">Inscription</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
