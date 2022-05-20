@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,6 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    /**
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     */
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    {
+        $this->userPasswordHasher = $userPasswordHasher;
+    }
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
@@ -36,6 +47,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    $user->getPassword()
+                )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -67,6 +84,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    $user->getPassword()
+                )
+            );
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
