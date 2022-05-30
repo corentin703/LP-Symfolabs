@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Promotion;
-use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\PromotionType;
+use App\Repository\CommentRepository;
 use App\Repository\PromotionRepository;
-use Cassandra\Date;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,12 +54,30 @@ class PromotionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="promotion_show", methods={"GET"})
+     * @Route("/{id}", name="promotion_show", methods={"GET", "POST"})
      */
-    public function show(Promotion $promotion): Response
+    public function show(Promotion $promotion, Request $request, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
     {
+        $comments = $commentRepository->findAllByPromotion($promotion->getId());
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setAuthor($this->getUser());
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('promotion/show.html.twig', [
             'promotion' => $promotion,
+            'comments' => $comments,
+            'comment_form' => $commentForm->createView(),
         ]);
     }
 

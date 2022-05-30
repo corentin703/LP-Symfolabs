@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,11 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Promotion $promotion;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTime $createdAt;
 
     public function getId(): ?int
     {
@@ -71,6 +77,18 @@ class Comment
     public function setPromotion(?Promotion $promotion): self
     {
         $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

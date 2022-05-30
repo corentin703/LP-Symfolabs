@@ -1,0 +1,26 @@
+<h3>Commentaires</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Auteur</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for comment in comments %}
+        <tr>
+            <td>{{ comments.id }}</td>
+            <td>{{ comments.author.userIdentifier }}</td>
+            <td>{{ comment.content }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="11">Aucun commentaire</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ include('comment/_comment_form.html.twig') }}
