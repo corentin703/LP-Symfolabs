@@ -15,13 +15,10 @@ class PromotionType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('discount')
-            ->add('created_at')
             ->add('start_at')
             ->add('expires_at')
-            ->add('became_hot_at')
             ->add('delivery_fees')
             ->add('company')
-            ->add('author')
         ;
     }
 

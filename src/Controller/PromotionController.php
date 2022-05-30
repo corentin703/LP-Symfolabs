@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Promotion;
+use App\Entity\User;
 use App\Form\PromotionType;
 use App\Repository\PromotionRepository;
+use Cassandra\Date;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +38,8 @@ class PromotionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $promotion->setCreatedAt(new \DateTime('now'));
+            $promotion->setAuthor($this->getUser());
             $entityManager->persist($promotion);
             $entityManager->flush();
 

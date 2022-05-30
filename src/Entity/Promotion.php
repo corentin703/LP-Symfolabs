@@ -70,12 +70,12 @@ class Promotion
     /**
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="promotion", orphanRemoval=true)
      */
-    private ArrayCollection $temperatures;
+    private Collection $temperatures;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="promotion", orphanRemoval=true)
      */
-    private ArrayCollection $comments;
+    private Collection $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="promotions")
