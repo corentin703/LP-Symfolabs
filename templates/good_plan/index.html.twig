@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GoodPlan index{% endblock %}
+
+{% block body %}
+    <h1>GoodPlan index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Discount</th>
+                <th>Created_at</th>
+                <th>Start_at</th>
+                <th>Expires_at</th>
+                <th>Became_hot_at</th>
+                <th>Delivery_fees</th>
+                <th>Company</th>
+                <th>Link</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for good_plan in good_plans %}
+            <tr>
+                <td>{{ good_plan.id }}</td>
+                <td>{{ good_plan.title }}</td>
+                <td>{{ good_plan.content }}</td>
+                <td>{{ good_plan.discount }}</td>
+                <td>{{ good_plan.createdAt ? good_plan.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ good_plan.startAt ? good_plan.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ good_plan.expiresAt ? good_plan.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ good_plan.becameHotAt ? good_plan.becameHotAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ good_plan.deliveryFees }}</td>
+                <td>{{ good_plan.company }}</td>
+                <td>{{ good_plan.link }}</td>
+                <td>
+                    <a href="{{ path('good_plan_show', {'id': good_plan.id}) }}">show</a>
+                    <a href="{{ path('good_plan_edit', {'id': good_plan.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('good_plan_new') }}">Create new</a>
+{% endblock %}

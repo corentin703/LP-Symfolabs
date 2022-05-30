@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GoodPlan{% endblock %}
+
+{% block body %}
+    <h1>Create new GoodPlan</h1>
+
+    {{ include('good_plan/_form.html.twig') }}
+
+    <a href="{{ path('good_plan_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GoodPlan{% endblock %}
+
+{% block body %}
+    <h1>GoodPlan</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ good_plan.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ good_plan.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ good_plan.content }}</td>
+            </tr>
+            <tr>
+                <th>Discount</th>
+                <td>{{ good_plan.discount }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ good_plan.createdAt ? good_plan.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Start_at</th>
+                <td>{{ good_plan.startAt ? good_plan.startAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Expires_at</th>
+                <td>{{ good_plan.expiresAt ? good_plan.expiresAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Became_hot_at</th>
+                <td>{{ good_plan.becameHotAt ? good_plan.becameHotAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Delivery_fees</th>
+                <td>{{ good_plan.deliveryFees }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ good_plan.company }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ good_plan.link }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('good_plan_index') }}">back to list</a>
+
+    <a href="{{ path('good_plan_edit', {'id': good_plan.id}) }}">edit</a>
+
+    {{ include('good_plan/_delete_form.html.twig') }}
+{% endblock %}
