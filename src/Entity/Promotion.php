@@ -28,7 +28,7 @@ class Promotion
     private ?string $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private ?string $content;
 
