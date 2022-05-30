@@ -6,14 +6,16 @@
             <th>Id</th>
             <th>Auteur</th>
             <th>Message</th>
+            <th>Posté le</th>
         </tr>
     </thead>
     <tbody>
     {% for comment in comments %}
         <tr>
-            <td>{{ comments.id }}</td>
-            <td>{{ comments.author.userIdentifier }}</td>
+            <td>{{ comment.id }}</td>
+            <td>{{ comment.author.userIdentifier }}</td>
             <td>{{ comment.content }}</td>
+            <td>{{ comment.createdAt.format("d/m/Y H:i") }}</td>
         </tr>
     {% else %}
         <tr>

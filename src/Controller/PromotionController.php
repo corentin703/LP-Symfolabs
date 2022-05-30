@@ -66,6 +66,7 @@ class PromotionController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setPromotion($promotion);
             $comment->setAuthor($this->getUser());
 
             $entityManager->persist($comment);
