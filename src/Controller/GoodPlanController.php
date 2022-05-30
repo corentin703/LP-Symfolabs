@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/good/plan")
+ * @Route("/goodPlan")
  */
 class GoodPlanController extends AbstractController
 {
@@ -36,6 +36,8 @@ class GoodPlanController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $goodPlan->setCreatedAt(new \DateTime('now'));
+            $goodPlan->setAuthor($this->getUser());
             $entityManager->persist($goodPlan);
             $entityManager->flush();
 
