@@ -1,6 +1,10 @@
-<h6>Donnez votre avis !</h6>
+{% if comment_form is defined %}
 
-{{ form_start(comment_form) }}
-    {{ form_widget(comment_form) }}
-    <button class="btn">{{ button_label|default('Send') }}</button>
-{{ form_end(comment_form) }}
+    <h6>Donnez votre avis !</h6>
+
+    {{ form_start(comment_form) }}
+        {{ form_widget(comment_form) }}
+        <button class="btn">{{ button_label|default('Send') }}</button>
+    {{ form_end(comment_form) }}
+
+{% endif %}

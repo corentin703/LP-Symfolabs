@@ -66,32 +66,37 @@ class GoodPlanController extends AbstractController
     {
         $comments = $commentRepository->findAllByPromotion($goodPlan->getId());
 
-        $comment = new Comment();
-        $commentForm = $this->createForm(CommentType::class, $comment);
-        $commentForm->handleRequest($request);
-
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $comment->setCreatedAt(new \DateTime('now'));
-            $comment->setPromotion($goodPlan);
-            $comment->setAuthor($this->getUser());
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'good_plan_show',
-                [
-                    'id' => $goodPlan->getId(),
-                ],
-                Response::HTTP_SEE_OTHER
-            );
-        }
-
-        return $this->render('good_plan/show.html.twig', [
+        $viewBag = [
             'good_plan' => $goodPlan,
             'comments' => $comments,
-            'comment_form' => $commentForm->createView(),
-        ]);
+        ];
+
+        if ($this->isGranted("IS_AUTHENTICATED_FULLY")) {
+            $comment = new Comment();
+            $commentForm = $this->createForm(CommentType::class, $comment);
+            $commentForm->handleRequest($request);
+
+            if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment->setCreatedAt(new \DateTime('now'));
+                $comment->setPromotion($goodPlan);
+                $comment->setAuthor($this->getUser());
+
+                $entityManager->persist($comment);
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'good_plan_show',
+                    [
+                        'id' => $goodPlan->getId(),
+                    ],
+                    Response::HTTP_SEE_OTHER
+                );
+            }
+
+            $viewBag['comment_form'] = $commentForm->createView();
+        }
+
+        return $this->render('good_plan/show.html.twig', $viewBag);
     }
 
     /**

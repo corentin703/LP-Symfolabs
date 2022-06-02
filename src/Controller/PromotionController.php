@@ -65,32 +65,37 @@ class PromotionController extends AbstractController
     {
         $comments = $commentRepository->findAllByPromotion($promotion->getId());
 
-        $comment = new Comment();
-        $commentForm = $this->createForm(CommentType::class, $comment);
-        $commentForm->handleRequest($request);
-
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $comment->setCreatedAt(new \DateTime('now'));
-            $comment->setPromotion($promotion);
-            $comment->setAuthor($this->getUser());
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'promotion_show',
-                [
-                    'id' => $promotion->getId(),
-                ],
-                Response::HTTP_SEE_OTHER
-            );
-        }
-
-        return $this->render('promotion/show.html.twig', [
+        $viewBag = [
             'promotion' => $promotion,
             'comments' => $comments,
-            'comment_form' => $commentForm->createView(),
-        ]);
+        ];
+
+        if ($this->isGranted("IS_AUTHENTICATED_FULLY")) {
+            $comment = new Comment();
+            $commentForm = $this->createForm(CommentType::class, $comment);
+            $commentForm->handleRequest($request);
+
+            if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment->setCreatedAt(new \DateTime('now'));
+                $comment->setPromotion($promotion);
+                $comment->setAuthor($this->getUser());
+
+                $entityManager->persist($comment);
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'promotion_show',
+                    [
+                        'id' => $promotion->getId(),
+                    ],
+                    Response::HTTP_SEE_OTHER
+                );
+            }
+
+            $viewBag['comment_form'] = $commentForm->createView();
+        }
+
+        return $this->render('promotion/show.html.twig', $viewBag);
     }
 
     /**
