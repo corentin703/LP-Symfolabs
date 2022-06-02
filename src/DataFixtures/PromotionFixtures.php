@@ -13,7 +13,7 @@ use Faker;
 class PromotionFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserRepository $userRepository;
-    private Faker\Generator $faker;
+    protected Faker\Generator $faker;
 
     /**
      * @param UserRepository $userRepository
@@ -30,11 +30,11 @@ class PromotionFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($users as $user) {
 
-            $promotion = $this->makePromotion($user);
+            $promotion = $this->makeOne($user);
             $manager->persist($promotion);
 
             if ($user->getId() % 2 == 0) {
-                $promotion = $this->makePromotion($user);
+                $promotion = $this->makeOne($user);
                 $manager->persist($promotion);
             }
         }
@@ -42,7 +42,7 @@ class PromotionFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    private function makePromotion(User $user): Promotion
+    protected function makeOne(User $user): Promotion
     {
         $promotion = new Promotion();
         $promotion->setCreatedAt(new \DateTime('now'));
