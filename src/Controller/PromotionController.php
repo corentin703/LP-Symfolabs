@@ -56,7 +56,12 @@ class PromotionController extends AbstractController
     /**
      * @Route("/{id}", name="promotion_show", methods={"GET", "POST"})
      */
-    public function show(Promotion $promotion, Request $request, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
+    public function show(
+        Promotion $promotion,
+        Request $request,
+        CommentRepository $commentRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $comments = $commentRepository->findAllByPromotion($promotion->getId());
 
@@ -72,7 +77,13 @@ class PromotionController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'promotion_show',
+                [
+                    'id' => $promotion->getId(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->render('promotion/show.html.twig', [

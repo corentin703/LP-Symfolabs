@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\GoodPlan;
+use App\Entity\Promotion;
+use App\Form\CommentType;
 use App\Form\GoodPlanType;
+use App\Repository\CommentRepository;
 use App\Repository\GoodPlanRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,12 +55,42 @@ class GoodPlanController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="good_plan_show", methods={"GET"})
+     * @Route("/{id}", name="good_plan_show", methods={"GET", "POST"})
      */
-    public function show(GoodPlan $goodPlan): Response
+    public function show(
+        GoodPlan $goodPlan,
+        Request $request,
+        CommentRepository $commentRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
+        $comments = $commentRepository->findAllByPromotion($goodPlan->getId());
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setCreatedAt(new \DateTime('now'));
+            $comment->setPromotion($goodPlan);
+            $comment->setAuthor($this->getUser());
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'good_plan_show',
+                [
+                    'id' => $goodPlan->getId(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
         return $this->render('good_plan/show.html.twig', [
             'good_plan' => $goodPlan,
+            'comments' => $comments,
+            'comment_form' => $commentForm->createView(),
         ]);
     }
 
