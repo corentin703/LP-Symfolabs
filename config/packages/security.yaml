@@ -34,10 +34,19 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_USER: PUBLIC_ACCESS
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: '^/register', roles: PUBLIC_ACCESS }
+        - { path: '^/user/\d+/(edit|delete)', roles: ROLE_USER }
+        - { path: '^/user/\d+', roles: PUBLIC_ACCESS }
+        - { path: '^/user/\d+/new', roles: ROLE_ADMIN }
         - { path: '^/user', roles: ROLE_ADMIN }
+        - { path: '^/(goodPlan|promotion)/\d+/(new|edit|delete)', roles: ROLE_USER }
+        - { path: '^/(goodPlan|promotion)', roles: PUBLIC_ACCESS }
