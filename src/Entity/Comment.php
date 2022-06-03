@@ -20,6 +20,7 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(groups={"commentForm"})
      */
     private ?string $content;
 

@@ -14,7 +14,10 @@ class GoodPlanType extends PromotionType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('link')
+            ->add('link', "",
+                [
+                    'required'=> true,
+                ])
         ;
     }
 
@@ -22,6 +25,7 @@ class GoodPlanType extends PromotionType
     {
         $resolver->setDefaults([
             'data_class' => GoodPlan::class,
+            'validation_groups' => ['goodPlanForm'],
         ]);
     }
 }

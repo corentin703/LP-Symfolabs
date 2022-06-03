@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Promotion;
 use App\Repository\PromotionKindRepository;
+use Doctrine\DBAL\Types\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,14 +36,37 @@ class PromotionType extends AbstractType
                 'multiple' => false,
                 'label' => 'Type',
                 'choices' => $kindSelect,
+                'required'=> true,
             ])
-            ->add('title')
-            ->add('content')
-            ->add('discount')
-            ->add('start_at')
-            ->add('expires_at')
-            ->add('delivery_fees')
-            ->add('company')
+            ->add('title', "",
+                [
+                    'required'=> true,
+                ])
+            ->add('content', "",
+                [
+                    'required'=> true,
+                ])
+            ->add('discount', "",
+                [
+                    'required'=> true,
+                ])
+            ->add('start_at', DateType::class,
+                [
+                    'required'=> true,
+                ])
+            ->add('expires_at', DateType::class,
+                [
+                    'required'=> true,
+                ])
+            ->add('delivery_fees', "",
+                [
+                    'required'=> true,
+                ])
+            ->add('company', "",
+                [
+                    'required'=> true,
+
+                ])
         ;
     }
 
@@ -50,6 +74,7 @@ class PromotionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Promotion::class,
+            'validation_groups' => ['promoForm'],
         ]);
     }
 }

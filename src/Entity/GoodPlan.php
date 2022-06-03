@@ -12,6 +12,8 @@ class GoodPlan extends Promotion
 {
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"goodPlanForm"})
+     * @Assert\Url(groups={"goodPlanForm"})
      */
     private ?string $link;
 
