@@ -30,7 +30,6 @@ class GoodPlanFixtures extends Fixture implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
 
         foreach ($users as $user) {
-
             $goodPlan = $this->makeGoodPlan($user);
             $manager->persist($goodPlan);
 

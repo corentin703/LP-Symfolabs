@@ -23,7 +23,8 @@ class CommentRepository extends ServiceEntityRepository
      * @param int $promotionId
      * @return Comment[] Returns an array of Comment objects
      */
-    public function findAllByPromotion(int $promotionId): array {
+    public function findAllByPromotion(int $promotionId): array
+    {
         return $this->createQueryBuilder('c')
             ->andWhere('c.promotion = :id')
             ->setParameter('id', $promotionId)

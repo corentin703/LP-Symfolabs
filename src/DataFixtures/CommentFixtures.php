@@ -27,8 +27,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         GoodPlanRepository $goodPlanRepository,
         PromotionRepository $promotionRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->goodPlanRepository = $goodPlanRepository;
         $this->promotionRepository = $promotionRepository;
         $this->userRepository = $userRepository;
@@ -50,8 +49,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $N_MIN_COMMENTS_TO_FAKE = 0;
         $N_MAX_COMMENTS_TO_FAKE = 15;
 
-        foreach ($models as $model)
-        {
+        foreach ($models as $model) {
             $nCommentsToFake = rand($N_MIN_COMMENTS_TO_FAKE, $N_MAX_COMMENTS_TO_FAKE);
             for ($i = 0; $i < $nCommentsToFake; ++$i) {
                 $comment = new Comment();

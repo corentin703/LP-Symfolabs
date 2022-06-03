@@ -61,8 +61,7 @@ class PromotionController extends AbstractController
         Request $request,
         CommentRepository $commentRepository,
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $comments = $commentRepository->findAllByPromotion($promotion->getId());
 
         $viewBag = [

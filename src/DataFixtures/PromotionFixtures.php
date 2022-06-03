@@ -29,7 +29,6 @@ class PromotionFixtures extends Fixture implements DependentFixtureInterface
         $users = $this->userRepository->findAll();
 
         foreach ($users as $user) {
-
             $promotion = $this->makeOne($user);
             $manager->persist($promotion);
 
