@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -30,6 +31,7 @@ class Comment
     private ?User $author;
 
     /**
+     * @Ignore()
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */

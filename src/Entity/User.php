@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -27,11 +28,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email;
 
     /**
+     * @Ignore()
      * @ORM\Column(type="json")
      */
     private array $roles = [];
 
     /**
+     * @Ignore()
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -43,16 +46,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $pseudo;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", orphanRemoval=true)
      */
     private Collection $comments;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="user", orphanRemoval=true)
      */
     private Collection $temperatures;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="author", orphanRemoval=true)
      */
     private Collection $promotions;

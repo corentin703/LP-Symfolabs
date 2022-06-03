@@ -6,6 +6,7 @@ use App\Repository\PromotionKindRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionKindRepository::class)
@@ -25,6 +26,7 @@ class PromotionKind
     private $name;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="kinds", orphanRemoval=true)
      */
     private $promotions;
