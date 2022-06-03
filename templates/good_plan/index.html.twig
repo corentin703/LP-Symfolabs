@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Type</th>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Discount</th>
@@ -26,6 +27,7 @@
         {% for good_plan in good_plans %}
             <tr>
                 <td>{{ good_plan.id }}</td>
+                <td>{{ good_plan.kind.name }}</td>
                 <td>{{ good_plan.title }}</td>
                 <td>{{ good_plan.content }}</td>
                 <td>{{ good_plan.discount }}</td>

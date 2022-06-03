@@ -83,6 +83,12 @@ class Promotion
      */
     private ?User $author;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PromotionKind::class, inversedBy="promotions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $kind;
+
     public function __construct()
     {
         $this->temperatures = new ArrayCollection();
@@ -270,6 +276,18 @@ class Promotion
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getKind(): ?PromotionKind
+    {
+        return $this->kind;
+    }
+
+    public function setKind(?PromotionKind $kind): self
+    {
+        $this->kind = $kind;
 
         return $this;
     }
