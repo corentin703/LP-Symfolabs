@@ -95,7 +95,7 @@ class Promotion
     private ?PromotionKind $kind;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $viewCount;
 
