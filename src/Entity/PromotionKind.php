@@ -26,7 +26,6 @@ class PromotionKind
     private $name;
 
     /**
-     * @Ignore()
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="kinds", orphanRemoval=true)
      */
     private $promotions;

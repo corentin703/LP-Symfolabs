@@ -6,6 +6,8 @@ use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
@@ -68,22 +70,26 @@ class Promotion
     private ?string $company;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Temperature::class, mappedBy="promotion", orphanRemoval=true)
      */
     private Collection $temperatures;
 
     /**
+     * @Ignore()
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="promotion", orphanRemoval=true)
      */
     private Collection $comments;
 
     /**
+     * @Ignore()
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?User $author;
 
     /**
+     * @Ignore()
      * @ORM\ManyToOne(targetEntity=PromotionKind::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
