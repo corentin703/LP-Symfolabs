@@ -94,6 +94,10 @@ class PromotionController extends AbstractController
             $viewBag['comment_form'] = $commentForm->createView();
         }
 
+        $promotion->setViewCount($promotion->getViewCount() + 1);
+        $entityManager->persist($promotion);
+        $entityManager->flush();
+
         return $this->render('promotion/show.html.twig', $viewBag);
     }
 
