@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\Temperature;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemperatureType extends AbstractType
@@ -13,12 +13,12 @@ class TemperatureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('positive', SubmitButton::class, [
+            ->add('positive', SubmitType::class, [
                 'label' => '+',
             ])
-            ->add('negative', SubmitButton::class, [
-                'label' => '-',
-            ])
+//            ->add('negative', SubmitType::class, [
+//                'label' => '-',
+//            ])
         ;
     }
 
