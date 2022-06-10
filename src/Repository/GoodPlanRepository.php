@@ -19,7 +19,8 @@ class GoodPlanRepository extends ServiceEntityRepository
         parent::__construct($registry, GoodPlan::class);
     }
 
-    public function findAllWithoutDisabled(): array {
+    public function findAllWithoutDisabled(): array
+    {
         return $this->createQueryBuilder('g')
             ->andWhere('g.isDisabled = 0')
             ->orderBy('g.created_at', 'DESC')

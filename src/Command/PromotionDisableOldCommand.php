@@ -40,15 +40,12 @@ class PromotionDisableOldCommand extends Command
 
         if ($mouth === null) {
             $mouth = 1;
-        }
-        else if (is_int($mouth))
-        {
+        } elseif (is_int($mouth)) {
             $io->error("The mouth amount must be an integer");
             return Command::FAILURE;
         }
 
-        if ($mouth)
-        {
+        if ($mouth) {
             $io->note(sprintf('Disabling promotions older than %i mouth.', $mouth));
         }
 
@@ -58,7 +55,8 @@ class PromotionDisableOldCommand extends Command
                 "UPDATE promotion SET is_disabled = 1 WHERE created_at < :dateTime",
                 $rsm
             )
-            ->setParameter('dateTime',
+            ->setParameter(
+                'dateTime',
                 $this->makeDateTime($mouth)
             )
             ->execute()
@@ -69,7 +67,8 @@ class PromotionDisableOldCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function makeDateTime(int $mouths): string {
+    private function makeDateTime(int $mouths): string
+    {
         $now = (new \DateTime())->getTimestamp();
         return date("Y-m-d H:i:s", strtotime("-" . $mouths . " months", $now));
     }

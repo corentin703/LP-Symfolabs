@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\DataFixtures\PromotionKindFixtures;
 use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -92,7 +93,7 @@ class Promotion
      * @ORM\ManyToOne(targetEntity=PromotionKind::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?PromotionKind $kind;
+    private PromotionKind $kind;
 
     /**
      * @ORM\Column(type="integer", nullable=true)

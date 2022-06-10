@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PromotionKind{% endblock %}
+
+{% block body %}
+    <h1>Create new PromotionKind</h1>
+
+    {{ include('promotion_kind/_form.html.twig') }}
+
+    <a href="{{ path('promotion_kind_index') }}">back to list</a>
+{% endblock %}

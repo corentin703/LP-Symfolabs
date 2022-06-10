@@ -19,7 +19,8 @@ class PromotionRepository extends ServiceEntityRepository
         parent::__construct($registry, Promotion::class);
     }
 
-    public function findAllWithoutDisabled(): array {
+    public function findAllWithoutDisabled(): array
+    {
         return $this->createQueryBuilder('p')
             ->andWhere('p.isDisabled = 0')
             ->orderBy('p.created_at', 'DESC')
