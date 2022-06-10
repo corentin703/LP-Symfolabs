@@ -58,6 +58,10 @@
         </tbody>
     </table>
 
+    <form action="{{ path('promotion_report', { 'id': promotion.id }) }}" method="POST">
+        <button class="btn btn-outline-danger">Signaler</button>
+    </form>
+
     <a href="{{ path('promotion_index') }}">back to list</a>
 
     <a href="{{ path('promotion_edit', {'id': promotion.id}) }}">edit</a>

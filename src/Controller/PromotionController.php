@@ -11,6 +11,7 @@ use App\Form\TemperatureType;
 use App\Repository\CommentRepository;
 use App\Repository\PromotionRepository;
 use App\Repository\TemperatureRepository;
+use App\Service\PromotionReportingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,8 +104,9 @@ class PromotionController extends AbstractController
                 $viewBag
             );
 
-            if ($response !== null)
+            if ($response !== null) {
                 return $response;
+            }
 
             $viewBag['comment_form'] = $commentForm->createView();
         }
@@ -117,6 +119,14 @@ class PromotionController extends AbstractController
         return $this->render('promotion/show.html.twig', $viewBag);
     }
 
+    /**
+     * @Route("/{id}/report", name="promotion_report", methods={"POST"})
+     */
+    public function report(Promotion $promotion, PromotionReportingService $promotionReportingService) {
+        $promotionReportingService->reportToAdmins($promotion);
+        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     private function handleTemperatureForm(
         Promotion $promotion,
         Request $request,
@@ -124,7 +134,6 @@ class PromotionController extends AbstractController
         TemperatureRepository $temperatureRepository,
         array& $viewBag
     ): ?Response {
-
         $temperaturesForPromotion = $temperatureRepository->getPromotionTemperatureByUser(
             $promotion->getId(),
             $this->getUser()->getId()
