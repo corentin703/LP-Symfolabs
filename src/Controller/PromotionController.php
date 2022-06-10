@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Promotion;
+use App\Entity\Temperature;
 use App\Form\CommentType;
 use App\Form\PromotionType;
+use App\Form\TemperatureType;
 use App\Repository\CommentRepository;
 use App\Repository\PromotionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,6 +93,33 @@ class PromotionController extends AbstractController
                 );
             }
 
+            $temperature = new Temperature();
+            $temperatureForm = $this->createForm(TemperatureType::class);
+            $temperatureForm->handleRequest($request);
+
+            if ($temperatureForm->isSubmitted() && $temperatureForm->isValid()) {
+                $temperature->setPromotion($promotion);
+                $temperature->setUser($this->getUser());
+
+                $positiveBtn = $temperatureForm->get('positive');
+                if ($positiveBtn !== null) {
+                    $temperature->setPositive($positiveBtn->isClicked());
+                }
+
+                $entityManager->persist($comment);
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'promotion_show',
+                    [
+                        'id' => $promotion->getId(),
+                    ],
+                    Response::HTTP_SEE_OTHER
+                );
+            }
+
+
+            $viewBag['temperature_form'] = $temperatureForm->createView();
             $viewBag['comment_form'] = $commentForm->createView();
         }
 
