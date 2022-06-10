@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\DataFixtures\PromotionKindFixtures;
 use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
@@ -26,16 +26,19 @@ class Promotion
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $discount;
 
@@ -46,11 +49,15 @@ class Promotion
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $start_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $expires_at;
 
@@ -61,11 +68,13 @@ class Promotion
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?float $delivery_fees;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $company;
 
