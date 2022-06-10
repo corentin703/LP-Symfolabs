@@ -99,6 +99,11 @@ class Promotion
      */
     private ?int $viewCount;
 
+    /**
+     * @ORM\Column(type="boolean", options={ "default": false })
+     */
+    private bool $isDisabled = false;
+
     public function __construct()
     {
         $this->temperatures = new ArrayCollection();
@@ -310,6 +315,18 @@ class Promotion
     public function setViewCount(int $viewCount): self
     {
         $this->viewCount = $viewCount;
+        return $this;
+    }
+
+    public function getIsDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setIsDisabled(bool $isDisabled): self
+    {
+        $this->isDisabled = $isDisabled;
+
         return $this;
     }
 }
