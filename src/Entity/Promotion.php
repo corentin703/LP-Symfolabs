@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
@@ -50,14 +51,14 @@ class Promotion
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\NotBlank(groups={"promoForm"})
-     * @Assert\Date(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $start_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\NotBlank(groups={"promoForm"})
-     * @Assert\Date(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $expires_at;
 

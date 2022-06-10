@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PromoCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromoCodeRepository::class)
@@ -19,6 +20,7 @@ class PromoCode
 
     /**
      * @ORM\Column(type="string", length=255)
+//     * @Assert\NotBlank(groups={"goodPlanForm"})
      */
     private ?string $value;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TemperatureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TemperatureRepository::class)
@@ -20,12 +21,14 @@ class Temperature
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="temperatures")
      * @ORM\JoinColumn(nullable=false)
+//     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Promotion::class, inversedBy="temperatures")
      * @ORM\JoinColumn(nullable=false)
+//     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?Promotion $promotion;
 

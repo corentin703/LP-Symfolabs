@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionKindRepository::class)
@@ -22,11 +23,13 @@ class PromotionKind
 
     /**
      * @ORM\Column(type="string", length=255)
+//     * @Assert\NotBlank(groups={"promoForm"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Promotion::class, mappedBy="kinds", orphanRemoval=true)
+//     * * @Assert\NotBlank(groups={"promoForm"})
      */
     private $promotions;
 

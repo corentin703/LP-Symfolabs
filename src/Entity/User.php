@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(groups={"userForm"})
+//     * @Assert\NotBlank(groups={"userForm"})
      */
     private ?string $email;
 
@@ -35,9 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"userForm"})
-     * @Assert\Length(min=7)
-     * @SecurityAssert\UserPassword(
+//     * @Assert\NotBlank(groups={"userForm"})
+//     * @Assert\Length(min=7)
+//     * @SecurityAssert\UserPassword(
      *     message = "Wrong value for your current password"
      * )
      */
@@ -45,8 +47,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"userForm"})
-     * @Assert\Length(min=7)
+//     * @Assert\NotBlank(groups={"userForm"})
+//     * @Assert\Length(min=7)
      */
     private ?string $pseudo;
 
@@ -65,11 +67,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $promotions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Promotion::class)
+     */
+    private $savedPromotions;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
         $this->promotions = new ArrayCollection();
+        $this->savedPromotions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +267,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $promotion->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Promotion[]
+     */
+    public function getSavedPromotions(): Collection
+    {
+        return $this->savedPromotions;
+    }
+
+    public function addSavedPromotion(Promotion $savedPromotion): self
+    {
+        if (!$this->savedPromotions->contains($savedPromotion)) {
+            $this->savedPromotions[] = $savedPromotion;
+        }
+
+        return $this;
+    }
+
+    public function removeSavedPromotion(Promotion $savedPromotion): self
+    {
+        $this->savedPromotions->removeElement($savedPromotion);
 
         return $this;
     }

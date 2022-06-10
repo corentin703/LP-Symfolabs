@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\GoodPlan;
 use App\Entity\Promotion;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,7 @@ class GoodPlanType extends PromotionType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('link', "",
+            ->add('link', UrlType::class,
                 [
                     'required'=> true,
                 ])
