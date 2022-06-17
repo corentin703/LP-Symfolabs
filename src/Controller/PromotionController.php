@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Promotion;
 use App\Entity\Temperature;
+use App\Event\TemperatureAddedEvent;
 use App\Form\CommentType;
 use App\Form\PromotionType;
 use App\Form\TemperatureType;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/promotion")
@@ -65,7 +67,8 @@ class PromotionController extends AbstractController
         Request $request,
         CommentRepository $commentRepository,
         TemperatureRepository $temperatureRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
     ): Response {
         $comments = $commentRepository->findAllByPromotion($promotion->getId());
 
@@ -101,6 +104,7 @@ class PromotionController extends AbstractController
                 $request,
                 $entityManager,
                 $temperatureRepository,
+                $eventDispatcher,
                 $viewBag
             );
 
@@ -132,6 +136,7 @@ class PromotionController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         TemperatureRepository $temperatureRepository,
+        EventDispatcherInterface $eventDispatcher,
         array& $viewBag
     ): ?Response {
         $temperaturesForPromotion = $temperatureRepository->getPromotionTemperatureByUser(
@@ -152,12 +157,20 @@ class PromotionController extends AbstractController
             $temperature->setUser($this->getUser());
 
             $positiveBtn = $temperatureForm->get('positive');
+            $negativeBtn = $temperatureForm->get('negative');
+
             if ($positiveBtn !== null) {
                 $temperature->setPositive($positiveBtn->isClicked());
+            } else if ($negativeBtn !== null) {
+                $temperature->setPositive(!$negativeBtn->isClicked());
+            } else {
+                return null;
             }
 
             $entityManager->persist($temperature);
             $entityManager->flush();
+
+            $eventDispatcher->dispatch(new TemperatureAddedEvent($promotion), 'temperature.added');
 
             return $this->redirectToRoute(
                 'promotion_show',

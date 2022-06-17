@@ -16,9 +16,9 @@ class TemperatureType extends AbstractType
             ->add('positive', SubmitType::class, [
                 'label' => '+',
             ])
-//            ->add('negative', SubmitType::class, [
-//                'label' => '-',
-//            ])
+            ->add('negative', SubmitType::class, [
+                'label' => '-',
+            ])
         ;
     }
 
