@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Promotion;
+use App\Entity\Temperature;
 use App\Form\CommentType;
 use App\Form\PromotionType;
+use App\Form\TemperatureType;
 use App\Repository\CommentRepository;
 use App\Repository\PromotionRepository;
+use App\Repository\TemperatureRepository;
+use App\Service\PromotionReportingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +64,7 @@ class PromotionController extends AbstractController
         Promotion $promotion,
         Request $request,
         CommentRepository $commentRepository,
+        TemperatureRepository $temperatureRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $comments = $commentRepository->findAllByPromotion($promotion->getId());
@@ -91,10 +96,80 @@ class PromotionController extends AbstractController
                 );
             }
 
+            $response = $this->handleTemperatureForm(
+                $promotion,
+                $request,
+                $entityManager,
+                $temperatureRepository,
+                $viewBag
+            );
+
+            if ($response !== null) {
+                return $response;
+            }
+
             $viewBag['comment_form'] = $commentForm->createView();
         }
 
+
+        $promotion->setViewCount($promotion->getViewCount() + 1);
+        $entityManager->persist($promotion);
+        $entityManager->flush();
+
         return $this->render('promotion/show.html.twig', $viewBag);
+    }
+
+    /**
+     * @Route("/{id}/report", name="promotion_report", methods={"POST"})
+     */
+    public function report(Promotion $promotion, PromotionReportingService $promotionReportingService) {
+        $promotionReportingService->reportToAdmins($promotion);
+        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function handleTemperatureForm(
+        Promotion $promotion,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TemperatureRepository $temperatureRepository,
+        array& $viewBag
+    ): ?Response {
+        $temperaturesForPromotion = $temperatureRepository->getPromotionTemperatureByUser(
+            $promotion->getId(),
+            $this->getUser()->getId()
+        );
+
+        if ($temperaturesForPromotion !== null && count($temperaturesForPromotion) > 0) {
+            return null;
+        }
+
+        $temperature = new Temperature();
+        $temperatureForm = $this->createForm(TemperatureType::class);
+        $temperatureForm->handleRequest($request);
+
+        if ($temperatureForm->isSubmitted() && $temperatureForm->isValid()) {
+            $temperature->setPromotion($promotion);
+            $temperature->setUser($this->getUser());
+
+            $positiveBtn = $temperatureForm->get('positive');
+            if ($positiveBtn !== null) {
+                $temperature->setPositive($positiveBtn->isClicked());
+            }
+
+            $entityManager->persist($temperature);
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'promotion_show',
+                [
+                    'id' => $promotion->getId(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        $viewBag['temperature_form'] = $temperatureForm->createView();
+        return null;
     }
 
     /**

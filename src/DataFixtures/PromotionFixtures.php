@@ -50,7 +50,7 @@ class PromotionFixtures extends Fixture implements DependentFixtureInterface
     protected function makeOne(User $user, PromotionKind $kind): Promotion
     {
         $promotion = new Promotion();
-        $promotion->setCreatedAt(new \DateTime('now'));
+        $promotion->setCreatedAt($this->faker->dateTime);
         $promotion->setAuthor($user);
         $promotion->setKind($kind);
         $promotion->setTitle($this->faker->sentence($user->getId() % 2 === 0 ? 2 : 3));

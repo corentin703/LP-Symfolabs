@@ -19,6 +19,8 @@
                 <th>Became_hot_at</th>
                 <th>Delivery_fees</th>
                 <th>Company</th>
+                <th>Nombre de vues</th>
+                <th>Température</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -36,6 +38,8 @@
                 <td>{{ promotion.becameHotAt ? promotion.becameHotAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ promotion.deliveryFees }}</td>
                 <td>{{ promotion.company }}</td>
+                <td>{{ promotion.viewCount }}</td>
+                <td>{{ promotion.temperatures.count }}°</td>
                 <td>
                     <a href="{{ path('promotion_show', {'id': promotion.id}) }}">show</a>
                     <a href="{{ path('promotion_add_to_favori', {'id': promotion.id}) }}">add to favs</a>

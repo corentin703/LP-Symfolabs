@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Promotion;
 use App\Entity\Temperature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,29 @@ class TemperatureRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Temperature::class);
+    }
+
+    public function getPromotionTemperatureByUser(int $promotionId, int $userId)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.user = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('t.promotion = :promotionId')
+            ->setParameter('promotionId', $promotionId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getPromotionTemperature(int $promotionId)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('count(t)')
+            ->where('t.promotion.id = :promotionId')
+            ->setParameter('promotionId', $promotionId)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

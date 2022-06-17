@@ -6,7 +6,6 @@ use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -103,7 +102,17 @@ class Promotion
      * @ORM\ManyToOne(targetEntity=PromotionKind::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $kind;
+    private PromotionKind $kind;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $viewCount;
+
+    /**
+     * @ORM\Column(type="boolean", options={ "default": false })
+     */
+    private bool $isDisabled = false;
 
     public function __construct()
     {
@@ -308,5 +317,26 @@ class Promotion
         return $this;
     }
 
+    public function getViewCount(): int
+    {
+        return $this->viewCount ?? 0;
+    }
 
+    public function setViewCount(int $viewCount): self
+    {
+        $this->viewCount = $viewCount;
+        return $this;
+    }
+
+    public function getIsDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setIsDisabled(bool $isDisabled): self
+    {
+        $this->isDisabled = $isDisabled;
+
+        return $this;
+    }
 }
