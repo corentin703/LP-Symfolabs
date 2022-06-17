@@ -14,6 +14,6 @@ class PromotionController extends AbstractController
      */
     public function index(PromotionRepository $promotionRepository): Response
     {
-        return $this->json($promotionRepository->findAll());
+        return $this->json($promotionRepository->findAllWithoutDisabled());
     }
 }

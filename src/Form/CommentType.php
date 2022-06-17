@@ -12,7 +12,10 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
+            ->add('content', "",
+                [
+                    'required'=> true,
+                ])
         ;
     }
 
@@ -20,6 +23,7 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Comment::class,
+            'validation_groups' => ['commentForm'],
         ]);
     }
 }

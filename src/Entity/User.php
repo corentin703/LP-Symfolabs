@@ -10,6 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -28,22 +30,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(groups={"userForm"})
      */
     private ?string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"userForm"})
+     * @Assert\Length(min=7)
+     * @SecurityAssert\UserPassword(
+     *     message = "Wrong value for your current password"
+     * )
      */
     private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"userForm"})
+     * @Assert\Length(min=7)
      */
     private ?string $pseudo;
 
@@ -62,11 +72,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $promotions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Promotion::class)
+     */
+    private $savedPromotions;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
         $this->promotions = new ArrayCollection();
+        $this->savedPromotions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,8 +125,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -255,6 +269,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $promotion->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Promotion[]
+     */
+    public function getSavedPromotions(): Collection
+    {
+        return $this->savedPromotions;
+    }
+
+    public function addSavedPromotion(Promotion $savedPromotion): self
+    {
+        if (!$this->savedPromotions->contains($savedPromotion)) {
+            $this->savedPromotions[] = $savedPromotion;
+        }
+
+        return $this;
+    }
+
+    public function removeSavedPromotion(Promotion $savedPromotion): self
+    {
+        $this->savedPromotions->removeElement($savedPromotion);
 
         return $this;
     }

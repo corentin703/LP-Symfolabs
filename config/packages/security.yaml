@@ -45,7 +45,8 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: '^/register', roles: PUBLIC_ACCESS }
         - { path: '^/user/\d+/(edit|delete)', roles: ROLE_USER }
-        - { path: '^/user/\d+', roles: PUBLIC_ACCESS }
+        - { path: '^/user/\d+', roles: ROLE_USER }
+        - { path: '^/user/me', roles: ROLE_USER }
         - { path: '^/user/\d+/new', roles: ROLE_ADMIN }
         - { path: '^/user', roles: ROLE_ADMIN }
         - { path: '^/(goodPlan|promotion)/\d+/(new|edit|delete)', roles: ROLE_USER }

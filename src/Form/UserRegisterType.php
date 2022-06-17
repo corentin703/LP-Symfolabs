@@ -16,9 +16,18 @@ class UserRegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
+            ->add('pseudo', TextType::class,
+                [
+                    'required'=> true,
+                ])
+            ->add('email', EmailType::class,
+                [
+                    'required'=> true,
+                ])
+            ->add('password', PasswordType::class,
+                [
+                    'required'=> true,
+                ])
         ;
     }
 
@@ -26,6 +35,7 @@ class UserRegisterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['userForm'],
         ]);
     }
 }

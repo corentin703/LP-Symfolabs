@@ -6,8 +6,8 @@ use App\Repository\PromotionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromotionRepository::class)
@@ -26,16 +26,19 @@ class Promotion
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $discount;
 
@@ -46,11 +49,15 @@ class Promotion
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $start_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
+     * @Assert\Type("\DateTimeInterface")(groups={"promoForm"})
      */
     private ?\DateTimeInterface $expires_at;
 
@@ -61,11 +68,13 @@ class Promotion
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?float $delivery_fees;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"promoForm"})
      */
     private ?string $company;
 
@@ -93,7 +102,17 @@ class Promotion
      * @ORM\ManyToOne(targetEntity=PromotionKind::class, inversedBy="promotions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $kind;
+    private PromotionKind $kind;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $viewCount;
+
+    /**
+     * @ORM\Column(type="boolean", options={ "default": false })
+     */
+    private bool $isDisabled = false;
 
     public function __construct()
     {
@@ -294,6 +313,29 @@ class Promotion
     public function setKind(?PromotionKind $kind): self
     {
         $this->kind = $kind;
+
+        return $this;
+    }
+
+    public function getViewCount(): int
+    {
+        return $this->viewCount ?? 0;
+    }
+
+    public function setViewCount(int $viewCount): self
+    {
+        $this->viewCount = $viewCount;
+        return $this;
+    }
+
+    public function getIsDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setIsDisabled(bool $isDisabled): self
+    {
+        $this->isDisabled = $isDisabled;
 
         return $this;
     }

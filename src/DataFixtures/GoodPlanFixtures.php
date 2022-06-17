@@ -50,7 +50,7 @@ class GoodPlanFixtures extends Fixture implements DependentFixtureInterface
     private function makeGoodPlan(User $user, PromotionKind $kind): Promotion
     {
         $goodPlan = new GoodPlan();
-        $goodPlan->setCreatedAt(new \DateTime('now'));
+        $goodPlan->setCreatedAt($this->faker->dateTime);
         $goodPlan->setAuthor($user);
         $goodPlan->setKind($kind);
         $goodPlan->setTitle($this->faker->sentence($user->getId() % 2 === 0 ? 2 : 3));

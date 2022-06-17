@@ -66,10 +66,24 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/me", name="user_me", methods={"GET"})
+     */
+    public function myProfile(): Response
+    {
+        return $this->redirectToRoute('user_show', [
+            'id' => $this->getUser()->getId(),
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
+        if ($user->getId() !== $this->getUser()->getId()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -80,6 +94,10 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if ($user->getId() !== $this->getUser()->getId()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -106,6 +124,10 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if ($user->getId() !== $this->getUser()->getId()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();

@@ -3,26 +3,24 @@
 {% block title %}Promotion index{% endblock %}
 
 {% block body %}
-    <h1>Promotion index</h1>
+    <h1>Promotion sauvegardéee index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Discount</th>
-                <th>Created_at</th>
-                <th>Start_at</th>
-                <th>Expires_at</th>
-                <th>Became_hot_at</th>
-                <th>Delivery_fees</th>
-                <th>Company</th>
-                <th>Nombre de vues</th>
-                <th>Température</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Discount</th>
+            <th>Created_at</th>
+            <th>Start_at</th>
+            <th>Expires_at</th>
+            <th>Became_hot_at</th>
+            <th>Delivery_fees</th>
+            <th>Company</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for promotion in promotions %}
@@ -38,8 +36,6 @@
                 <td>{{ promotion.becameHotAt ? promotion.becameHotAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ promotion.deliveryFees }}</td>
                 <td>{{ promotion.company }}</td>
-                <td>{{ promotion.viewCount }}</td>
-                <td>{{ promotion.temperatures.count }}°</td>
                 <td>
                     <a href="{{ path('promotion_show', {'id': promotion.id}) }}">show</a>
                     <a href="{{ path('promotion_edit', {'id': promotion.id}) }}">edit</a>
@@ -55,3 +51,4 @@
 
     <a href="{{ path('promotion_new') }}">Create new</a>
 {% endblock %}
+
