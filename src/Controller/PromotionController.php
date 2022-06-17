@@ -204,4 +204,19 @@ class PromotionController extends AbstractController
 
         return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    /**
+     * @Route("/{id}/savePromotion", name="promotion_add_to_favori", methods={"POST"})
+     */
+    public function saveToFavorite(Request $request, Promotion $promotion, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $user->addSavedPromotion($promotion);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
 }
