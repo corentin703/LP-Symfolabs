@@ -10,16 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/saved/promotion")
+ */
 class SavedPromotionController extends AbstractController
 {
     /**
-     * @Route("/saved/promotion", name="saved_promotion_index")
+     * @Route("/", name="saved_promotion_index")
      */
     public function index(PromotionRepository $promotionRepository): Response
     {
         return $this->render('saved_promotion/index.html.twig', [
             'controller_name' => 'SavedPromotionController',
-            'promotions' => $promotionRepository->findAll(),
+            'savedPromotions' => $promotionRepository->findAll(),
         ]);
     }
 
