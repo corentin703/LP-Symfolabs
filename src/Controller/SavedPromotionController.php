@@ -35,11 +35,15 @@ class SavedPromotionController extends AbstractController
      */
     public function delete(Request $request, Promotion $promotion, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$promotion->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($promotion);
-            $entityManager->flush();
-        }
+//        if ($this->isCsrfTokenValid('delete'.$promotion->getId(), $request->request->get('_token'))) {
+//            $entityManager->remove($promotion);
+//            $entityManager->flush();
+//        }
+        $user = $this->getUser();
+        $user->removeSavedPromotion($promotion);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('saved_promotion_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
