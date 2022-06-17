@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Promotion;
 use App\Repository\PromotionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +19,14 @@ class SavedPromotionController extends AbstractController
     /**
      * @Route("/", name="saved_promotion_index")
      */
-    public function index(PromotionRepository $promotionRepository): Response
+    public function index(PromotionRepository $promotionRepository, UserRepository $userRepository): Response
     {
+//        $userRepository->
         return $this->render('saved_promotion/index.html.twig', [
             'controller_name' => 'SavedPromotionController',
-            'savedPromotions' => $promotionRepository->findAll(),
+            'savedPromotions' => $this->getUser()->getSavedPromotions(),
+            'userID' => $this->getUser()->getUserIdentifier(),
+            'size' => count($this->getUser()->getSavedPromotions()),
         ]);
     }
 
