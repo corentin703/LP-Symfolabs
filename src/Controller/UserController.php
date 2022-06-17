@@ -94,7 +94,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($user->getId() !== $user->getId()) {
+        if ($user->getId() !== $this->getUser()->getId()) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
 
@@ -124,7 +124,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($user->getId() !== $user->getId()) {
+        if ($user->getId() !== $this->getUser()->getId()) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
 

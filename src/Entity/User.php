@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-//     * @Assert\NotBlank(groups={"userForm"})
+     * @Assert\NotBlank(groups={"userForm"})
      */
     private ?string $email;
 
@@ -42,9 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-//     * @Assert\NotBlank(groups={"userForm"})
-//     * @Assert\Length(min=7)
-//     * @SecurityAssert\UserPassword(
+     * @Assert\NotBlank(groups={"userForm"})
+     * @Assert\Length(min=7)
+     * @SecurityAssert\UserPassword(
      *     message = "Wrong value for your current password"
      * )
      */
@@ -52,8 +52,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-//     * @Assert\NotBlank(groups={"userForm"})
-//     * @Assert\Length(min=7)
+     * @Assert\NotBlank(groups={"userForm"})
+     * @Assert\Length(min=7)
      */
     private ?string $pseudo;
 
