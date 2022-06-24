@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Promotion;
 use App\Entity\Temperature;
+use App\Event\BadgeTriggerEvent;
 use App\Event\TemperatureAddedEvent;
 use App\Form\CommentType;
 use App\Form\PromotionType;
@@ -38,7 +39,7 @@ class PromotionController extends AbstractController
     /**
      * @Route("/new", name="promotion_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface  $eventDispatcher): Response
     {
         $promotion = new Promotion();
         $form = $this->createForm(PromotionType::class, $promotion);
@@ -49,6 +50,15 @@ class PromotionController extends AbstractController
             $promotion->setAuthor($this->getUser());
             $entityManager->persist($promotion);
             $entityManager->flush();
+
+            $eventDispatcher->dispatch(
+                new BadgeTriggerEvent(
+                    BadgeTriggerEvent::EVENT_DEAL_ADDED,
+                    $this->getUser(),
+                    $promotion,
+                ),
+                'badge.trigger'
+            );
 
             return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -89,6 +99,15 @@ class PromotionController extends AbstractController
 
                 $entityManager->persist($comment);
                 $entityManager->flush();
+
+                $eventDispatcher->dispatch(
+                    new BadgeTriggerEvent(
+                        BadgeTriggerEvent::EVENT_COMMENT_ADDED,
+                        $this->getUser(),
+                        $promotion,
+                    ),
+                    'badge.trigger'
+                );
 
                 return $this->redirectToRoute(
                     'promotion_show',
@@ -169,6 +188,15 @@ class PromotionController extends AbstractController
 
             $entityManager->persist($temperature);
             $entityManager->flush();
+
+            $eventDispatcher->dispatch(
+                new BadgeTriggerEvent(
+                    BadgeTriggerEvent::EVENT_DEAL_VOTED,
+                    $this->getUser(),
+                    $promotion,
+                ),
+                'badge.trigger'
+            );
 
             $eventDispatcher->dispatch(new TemperatureAddedEvent($promotion), 'temperature.added');
 

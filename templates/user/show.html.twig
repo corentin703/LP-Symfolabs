@@ -21,7 +21,9 @@
             </tr>
             <tr>
                 <th>Badges</th>
-                <td>{{ user.badges ? user.badges|json_encode : '' }}</td>
+                <td>{% for badge in user.badges.values %}
+                        {{ badge.name }},
+                    {% endfor %}
             </tr>
             <tr>
                 <th>Pseudo</th>

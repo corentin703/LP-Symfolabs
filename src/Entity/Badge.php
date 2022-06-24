@@ -29,6 +29,16 @@ class Badge
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $delta;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -71,6 +81,30 @@ class Badge
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getDelta(): ?int
+    {
+        return $this->delta;
+    }
+
+    public function setDelta(int $delta): self
+    {
+        $this->delta = $delta;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

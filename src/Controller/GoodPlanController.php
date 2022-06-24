@@ -5,15 +5,21 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\GoodPlan;
 use App\Entity\Promotion;
+use App\Entity\Temperature;
+use App\Event\BadgeTriggerEvent;
+use App\Event\TemperatureAddedEvent;
 use App\Form\CommentType;
 use App\Form\GoodPlanType;
+use App\Form\TemperatureType;
 use App\Repository\CommentRepository;
 use App\Repository\GoodPlanRepository;
+use App\Repository\TemperatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/goodPlan")
@@ -33,7 +39,7 @@ class GoodPlanController extends AbstractController
     /**
      * @Route("/new", name="good_plan_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher): Response
     {
         $goodPlan = new GoodPlan();
         $form = $this->createForm(GoodPlanType::class, $goodPlan);
@@ -44,6 +50,15 @@ class GoodPlanController extends AbstractController
             $goodPlan->setAuthor($this->getUser());
             $entityManager->persist($goodPlan);
             $entityManager->flush();
+
+            $eventDispatcher->dispatch(
+                new BadgeTriggerEvent(
+                    BadgeTriggerEvent::EVENT_DEAL_ADDED,
+                    $this->getUser(),
+                    $goodPlan,
+                ),
+                'badge.trigger'
+            );
 
             return $this->redirectToRoute('good_plan_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -61,7 +76,9 @@ class GoodPlanController extends AbstractController
         GoodPlan $goodPlan,
         Request $request,
         CommentRepository $commentRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        TemperatureRepository $temperatureRepository
     ): Response {
         $comments = $commentRepository->findAllByPromotion($goodPlan->getId());
 
@@ -83,6 +100,15 @@ class GoodPlanController extends AbstractController
                 $entityManager->persist($comment);
                 $entityManager->flush();
 
+                $eventDispatcher->dispatch(
+                    new BadgeTriggerEvent(
+                        BadgeTriggerEvent::EVENT_COMMENT_ADDED,
+                        $this->getUser(),
+                        $goodPlan,
+                    ),
+                    'badge.trigger'
+                );
+
                 return $this->redirectToRoute(
                     'good_plan_show',
                     [
@@ -90,6 +116,19 @@ class GoodPlanController extends AbstractController
                     ],
                     Response::HTTP_SEE_OTHER
                 );
+            }
+
+            $response = $this->handleTemperatureForm(
+                $goodPlan,
+                $request,
+                $entityManager,
+                $temperatureRepository,
+                $eventDispatcher,
+                $viewBag
+            );
+
+            if ($response !== null) {
+                return $response;
             }
 
             $viewBag['comment_form'] = $commentForm->createView();
@@ -129,5 +168,68 @@ class GoodPlanController extends AbstractController
         }
 
         return $this->redirectToRoute('good_plan_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function handleTemperatureForm(
+        GoodPlan $goodPlan,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TemperatureRepository $temperatureRepository,
+        EventDispatcherInterface $eventDispatcher,
+        array& $viewBag
+    ): ?Response {
+        $temperaturesForPromotion = $temperatureRepository->getPromotionTemperatureByUser(
+            $goodPlan->getId(),
+            $this->getUser()->getId()
+        );
+
+        if ($temperaturesForPromotion !== null && count($temperaturesForPromotion) > 0) {
+            return null;
+        }
+
+        $temperature = new Temperature();
+        $temperatureForm = $this->createForm(TemperatureType::class);
+        $temperatureForm->handleRequest($request);
+
+        if ($temperatureForm->isSubmitted() && $temperatureForm->isValid()) {
+            $temperature->setPromotion($goodPlan);
+            $temperature->setUser($this->getUser());
+
+            $positiveBtn = $temperatureForm->get('positive');
+            $negativeBtn = $temperatureForm->get('negative');
+
+            if ($positiveBtn !== null) {
+                $temperature->setPositive($positiveBtn->isClicked());
+            } else if ($negativeBtn !== null) {
+                $temperature->setPositive(!$negativeBtn->isClicked());
+            } else {
+                return null;
+            }
+
+            $entityManager->persist($temperature);
+            $entityManager->flush();
+
+            $eventDispatcher->dispatch(
+                new BadgeTriggerEvent(
+                    BadgeTriggerEvent::EVENT_DEAL_VOTED,
+                    $this->getUser(),
+                    $goodPlan,
+                ),
+                'badge.trigger'
+            );
+
+            $eventDispatcher->dispatch(new TemperatureAddedEvent($goodPlan), 'temperature.added');
+
+            return $this->redirectToRoute(
+                'good_plan_show',
+                [
+                    'id' => $goodPlan->getId(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        $viewBag['temperature_form'] = $temperatureForm->createView();
+        return null;
     }
 }
