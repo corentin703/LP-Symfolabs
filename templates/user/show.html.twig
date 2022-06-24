@@ -21,9 +21,11 @@
             </tr>
             <tr>
                 <th>Badges</th>
-                <td>{% for badge in user.badges.values %}
+                <td>
+                    {% for badge in user.badges.values %}
                         {{ badge.name }},
                     {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Pseudo</th>

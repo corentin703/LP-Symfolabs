@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Promotion;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,6 +29,15 @@ class PromotionRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+//    public function findHotterByUser(User $user) {
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.author = :userId')
+//            ->setParameter('userId', $user->getId())
+//
+//
+//
+//    }
 
     // /**
     //  * @return Promotion[] Returns an array of Promotion objects

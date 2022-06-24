@@ -84,6 +84,11 @@ class UserController extends AbstractController
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
 
+        $promotionsCount = $user->getPromotions()->count();
+        $commentsCount = $user->getComments()->count();
+//        $hotterDealTemperature = $user->getPromotions()->
+
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);

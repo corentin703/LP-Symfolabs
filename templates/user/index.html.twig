@@ -22,7 +22,11 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.badges ? user.badges|json_encode : '' }}</td>
+                <td>
+                    {% for badge in user.badges.values %}
+                        {{ badge.name }},
+                    {% endfor %}
+                </td>
                 <td>{{ user.pseudo }}</td>
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
