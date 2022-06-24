@@ -6,11 +6,6 @@
 parameters:
 
 services:
-
-    App\Event\TemperatureAddedListener:
-        tags:
-            - { name: temperature.added_listener, event: temperature.added }
-
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
