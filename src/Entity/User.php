@@ -77,12 +77,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $savedPromotions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Badge::class, mappedBy="users")
+     */
+    private $badges;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
         $this->promotions = new ArrayCollection();
         $this->savedPromotions = new ArrayCollection();
+        $this->badges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -293,6 +299,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeSavedPromotion(Promotion $savedPromotion): self
     {
         $this->savedPromotions->removeElement($savedPromotion);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Badge[]
+     */
+    public function getBadges(): Collection
+    {
+        return $this->badges;
+    }
+
+    public function addBadge(Badge $badge): self
+    {
+        if (!$this->badges->contains($badge)) {
+            $this->badges[] = $badge;
+            $badge->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBadge(Badge $badge): self
+    {
+        if ($this->badges->removeElement($badge)) {
+            $badge->removeUser($this);
+        }
 
         return $this;
     }
