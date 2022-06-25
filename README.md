@@ -1,6 +1,9 @@
 # Symfolabs
 
-## Mise en place
+Branche de rendu : *main*.
+Cloner comme ceci : ```git clone --branch main git@gitlab.iut-clermont.uca.fr:coverot/symfolabs.git```
+
+## Mise en place :
 
 ### Sur *VDN* : 
 Entrez `docker-compose up -d` à la racine du répertoire du projet dans la machine virtuelle Docker.
@@ -25,3 +28,22 @@ Les données insérées par les fixtures sont générées aléatoirement par la 
 sauf le mot de passe par défaut des utilisateurs qui est *123456789*.
 
 Exécutez le script comme suit : ```docker exec web_lp-web ./setUp.sh```.
+
+## Fonctionnalités implémentées : 
+
+- CRUD sur 
+  - Promotions
+  - Bon plans
+  - Utilisateurs
+  - Type de promotion
+- Route REST sur ```GET /api/promotion``` pour obtenir la liste des promotions
+- Gestion droits d'accès aux pages via système de rôles
+- Gestion des badges à partir de règles définies en base de données (pas d'interface graphique pour les gérer)
+- Gestion des températures des promotions
+- Système de commentaire
+- Système de signalement par courriel
+- Gestion des favoris utilisateur
+
+## Fonctionnalités non disponibles :
+- Barre de recherche des promotions
+- Joli design
