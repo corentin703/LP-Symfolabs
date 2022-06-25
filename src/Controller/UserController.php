@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\PromotionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,7 +79,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      */
-    public function show(User $user): Response
+    public function show(User $user, PromotionRepository $promotionRepository): Response
     {
         if ($user->getId() !== $this->getUser()->getId()) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -86,6 +87,9 @@ class UserController extends AbstractController
 
         $promotionsCount = $user->getPromotions()->count();
         $commentsCount = $user->getComments()->count();
+        $hotterPromotionScore = $promotionRepository->findHotterScoreByUser($this->getUser());
+        $averageScoreDuringYear = $promotionRepository->findAverageScoreByUserDuringLastYear($this->getUser());
+        dd($averageScoreDuringYear);
 //        $hotterDealTemperature = $user->getPromotions()->
 
 

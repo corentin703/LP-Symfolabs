@@ -46,34 +46,52 @@ class PromotionType extends AbstractType
                     return $kind->getName();
                 },
             ])
-            ->add('title', TextType::class,
+            ->add(
+                'title',
+                TextType::class,
                 [
                     'required'=> true,
-                ])
-            ->add('content', TextType::class,
+                ]
+            )
+            ->add(
+                'content',
+                TextType::class,
                 [
                     'required'=> true,
-                ])
-            ->add('discount', TextType::class,
+                ]
+            )
+            ->add(
+                'discount',
+                TextType::class,
                 [
                     'required'=> true,
-                ])
+                ]
+            )
             ->add('start_at', DateTimeType::class, [
 
                 'required'=> true,
             ])
-            ->add('expires_at', DateTimeType::class,
+            ->add(
+                'expires_at',
+                DateTimeType::class,
                 [
                     'required'=> true,
-                ])
-            ->add('delivery_fees', NumberType::class,
+                ]
+            )
+            ->add(
+                'delivery_fees',
+                NumberType::class,
                 [
                     'required'=> true,
-                ])
-            ->add('company', TextType::class,
+                ]
+            )
+            ->add(
+                'company',
+                TextType::class,
                 [
                     'required'=> true,
-                ])
+                ]
+            )
         ;
     }
 

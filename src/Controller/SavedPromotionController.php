@@ -45,5 +45,4 @@ class SavedPromotionController extends AbstractController
 
         return $this->redirectToRoute('saved_promotion_index', [], Response::HTTP_SEE_OTHER);
     }
-
 }

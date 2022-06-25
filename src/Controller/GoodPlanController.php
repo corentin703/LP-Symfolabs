@@ -200,7 +200,7 @@ class GoodPlanController extends AbstractController
 
             if ($positiveBtn !== null) {
                 $temperature->setPositive($positiveBtn->isClicked());
-            } else if ($negativeBtn !== null) {
+            } elseif ($negativeBtn !== null) {
                 $temperature->setPositive(!$negativeBtn->isClicked());
             } else {
                 return null;

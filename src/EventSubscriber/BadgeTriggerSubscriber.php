@@ -31,8 +31,6 @@ class BadgeTriggerSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $badges = $this->badgeRepository->findAll();
 
-        dd($user->getBadges()->getValues());
-
         foreach ($badges as $badge) {
             if ($user->getBadges()->contains($badge)) {
                 continue;
@@ -52,7 +50,8 @@ class BadgeTriggerSubscriber implements EventSubscriberInterface
      * @param User $user
      * @return bool True if count >= delta
      */
-    public function evaluate(string $type, string $delta, User $user): bool {
+    public function evaluate(string $type, string $delta, User $user): bool
+    {
         switch ($type) {
             case Promotion::class:
                 $count = $user->getPromotions()->count();

@@ -15,10 +15,13 @@ class GoodPlanType extends PromotionType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('link', UrlType::class,
+            ->add(
+                'link',
+                UrlType::class,
                 [
                     'required'=> true,
-                ])
+                ]
+            )
         ;
     }
 

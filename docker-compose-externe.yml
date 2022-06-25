@@ -4,14 +4,14 @@ services:
 
   mysql:
     image: mysql:5.7
-#    container_name: mysql_lp-web
+    container_name: mysql_lp-web
     restart: always
     command: ['--default-authentication-plugin=mysql_native_password']
     ports:
       - '3306:3306'
     volumes:
-#      - db-data:/var/lib/mysql
-      - ./.docker/php-externe/database:/var/lib/mysql
+      - db-data:/var/lib/mysql
+#      - ./.docker/php-externe/database:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: lp_web
@@ -21,7 +21,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-#    container_name: phpmyadmin_lp-web
+    container_name: phpmyadmin_lp-web
     restart: always
     depends_on:
       - mysql
@@ -34,7 +34,7 @@ services:
 
   maildev:
     image: maildev/maildev
-#    container_name: maildev_lp-web
+    container_name: maildev_lp-web
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
     ports:
       - "8082:80"
@@ -44,7 +44,7 @@ services:
 
   web:
     build: .docker/php-externe
-#    container_name: web_lp-web
+    container_name: web_lp-web
     ports:
       - "80:80"
     volumes:
@@ -56,5 +56,5 @@ services:
 networks:
   dev:
 
-#volumes:
-#  db-data:
+volumes:
+  db-data:

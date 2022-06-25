@@ -21,7 +21,8 @@ class PromotionReportingService implements PromotionReportingServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function reportToAdmins(Promotion $promotion) {
+    public function reportToAdmins(Promotion $promotion)
+    {
         $admins = $this->userRepository->findAllAdmins();
 
         $email = new Email();
@@ -37,5 +38,4 @@ class PromotionReportingService implements PromotionReportingServiceInterface
 
         $this->mailer->send($email);
     }
-
 }

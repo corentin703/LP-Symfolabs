@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Promotion;
 use App\Entity\User;
+use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,14 +31,47 @@ class PromotionRepository extends ServiceEntityRepository
             ;
     }
 
-//    public function findHotterByUser(User $user) {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.author = :userId')
-//            ->setParameter('userId', $user->getId())
-//
-//
-//
-//    }
+    public function findHotterScoreByUser(User $user): int
+    {
+        $score = $this->createQueryBuilder('p')
+            ->andWhere('p.author = :userId')
+            ->setParameter('userId', $user->getId())
+            ->leftJoin('p.temperatures', 'tl')
+            ->select('count(tl.id) as score')
+            ->groupBy('p.id')
+            ->orderBy('score', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+
+        if (count($score) > 0) {
+            return $score['score'];
+        }
+
+        return 0;
+    }
+
+    public function findAverageScoreByUserDuringLastYear(User $user): int
+    {
+        $lastYear = Carbon::now()->subYears(1);
+
+        $score = $this->createQueryBuilder('p')
+            ->andWhere('p.author = :userId')
+            ->setParameter('userId', $user->getId())
+            ->leftJoin('p.temperatures', 'tl')
+            ->select('count(tl.id) as score')
+            ->groupBy('p.id')
+            ->orderBy('score', 'DESC')
+            ->select('AVG(score)')
+            ->getQuery()
+            ->getSingleResult();
+
+        if (count($score) > 0) {
+            return $score['score'];
+        }
+
+        return 0;
+    }
 
     // /**
     //  * @return Promotion[] Returns an array of Promotion objects

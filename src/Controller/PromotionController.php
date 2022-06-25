@@ -145,7 +145,8 @@ class PromotionController extends AbstractController
     /**
      * @Route("/{id}/report", name="promotion_report", methods={"POST"})
      */
-    public function report(Promotion $promotion, PromotionReportingService $promotionReportingService) {
+    public function report(Promotion $promotion, PromotionReportingService $promotionReportingService)
+    {
         $promotionReportingService->reportToAdmins($promotion);
         return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -180,7 +181,7 @@ class PromotionController extends AbstractController
 
             if ($positiveBtn !== null) {
                 $temperature->setPositive($positiveBtn->isClicked());
-            } else if ($negativeBtn !== null) {
+            } elseif ($negativeBtn !== null) {
                 $temperature->setPositive(!$negativeBtn->isClicked());
             } else {
                 return null;
@@ -258,6 +259,4 @@ class PromotionController extends AbstractController
 
         return $this->redirectToRoute('promotion_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

@@ -8,9 +8,9 @@ use App\Entity\User;
 
 class BadgeTriggerEvent
 {
-    const EVENT_DEAL_ADDED = 'EVENT_DEAL_ADDED';
-    const EVENT_DEAL_VOTED = 'EVENT_DEAL_VOTED';
-    const EVENT_COMMENT_ADDED = 'EVENT_COMMENT_ADDED';
+    public const EVENT_DEAL_ADDED = 'EVENT_DEAL_ADDED';
+    public const EVENT_DEAL_VOTED = 'EVENT_DEAL_VOTED';
+    public const EVENT_COMMENT_ADDED = 'EVENT_COMMENT_ADDED';
 
     private string $eventKind;
     private User $user;
@@ -24,7 +24,7 @@ class BadgeTriggerEvent
 
         if ($entity instanceof Promotion) {
             $this->promotion = $entity;
-        } else if ($entity instanceof Comment) {
+        } elseif ($entity instanceof Comment) {
             $this->comment = $entity;
         }
     }
@@ -60,6 +60,4 @@ class BadgeTriggerEvent
     {
         return $this->comment;
     }
-
-
 }
