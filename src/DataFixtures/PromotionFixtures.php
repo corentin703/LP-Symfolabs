@@ -58,6 +58,7 @@ class PromotionFixtures extends Fixture implements DependentFixtureInterface
         $promotion->setContent($this->faker->sentence(50));
         $promotion->setDeliveryFees($this->faker->randomFloat(2, 0, 15));
         $promotion->setDiscount($this->faker->randomNumber(2));
+        $promotion->setViewCount($this->faker->randomNumber(2));
 
         return $promotion;
     }

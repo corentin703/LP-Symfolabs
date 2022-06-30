@@ -58,6 +58,7 @@ class GoodPlanFixtures extends Fixture implements DependentFixtureInterface
         $goodPlan->setContent($this->faker->sentence(50));
         $goodPlan->setDeliveryFees($this->faker->randomFloat(2, 0, 15));
         $goodPlan->setDiscount($this->faker->randomNumber(2));
+        $goodPlan->setViewCount($this->faker->randomNumber(2));
         $goodPlan->setLink($this->faker->url());
 
         return $goodPlan;

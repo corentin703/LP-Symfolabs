@@ -42,7 +42,7 @@ Exécutez le script comme suit : ```docker exec web_lp-web ./setUp.sh```.
 - Gestion des températures des promotions
 - Système de commentaire
 - Système de signalement par courriel
-- Gestion des favoris utilisateur
+- Gestion des favoris de l'utilisateur
 - Barre de recherche sur les promotions et les bons plans
 - Statistiques (accessibles dans la rubrique *Mon compte* :
   - Nombre de deals postés
@@ -53,5 +53,8 @@ Exécutez le script comme suit : ```docker exec web_lp-web ./setUp.sh```.
 - Joli design
 - Page d'accueil
 - Parmi les statistiques (TP 8)
-  - Moyenne des notes des deals postés sur 1 an glissant
+  - Moyenne des notes des deals postés sur un an glissant
   - Pourcentage de deals postés devenus hot
+
+## Problèmes connus 
+- Le chargement des fixtures ne peut pas purger une base de données déjà remplie sans erreurs : il faut supprimer la base, la recréer et la charger à ce moment-là.
