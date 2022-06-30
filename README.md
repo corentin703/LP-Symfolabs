@@ -27,7 +27,7 @@ Pour régler cela, nous vous fait un script *setUp.sh* exécutant dans l'ordre l
 Les données insérées par les fixtures sont générées aléatoirement par la librairie [FakerPhp](https://fakerphp.github.io),
 sauf le mot de passe par défaut des utilisateurs qui est *123456789*.
 
-Exécutez le script comme suit : ```docker exec web_lp-web ./setUp.sh```.
+Exécutez le script comme suit : ```docker exec web_lp-web chmod +x ./setUp.sh && ./setUp.sh```.
 
 ## Fonctionnalités implémentées : 
 
