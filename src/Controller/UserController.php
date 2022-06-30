@@ -88,13 +88,16 @@ class UserController extends AbstractController
         $promotionsCount = $user->getPromotions()->count();
         $commentsCount = $user->getComments()->count();
         $hotterPromotionScore = $promotionRepository->findHotterScoreByUser($this->getUser());
-        $averageScoreDuringYear = $promotionRepository->findAverageScoreByUserDuringLastYear($this->getUser());
-        dd($averageScoreDuringYear);
+//        $averageScoreDuringYear = $promotionRepository->findAverageScoreByUserDuringLastYear($this->getUser());
+//        dd($averageScoreDuringYear);
 //        $hotterDealTemperature = $user->getPromotions()->
 
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'promotions_count' => $promotionsCount,
+            'comments_count' => $commentsCount,
+            'hotterPromotionScore' => $hotterPromotionScore,
         ]);
     }
 
