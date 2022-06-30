@@ -43,7 +43,15 @@ Exécutez le script comme suit : ```docker exec web_lp-web ./setUp.sh```.
 - Système de commentaire
 - Système de signalement par courriel
 - Gestion des favoris utilisateur
+- Barre de recherche sur les promotions et les bons plans
+- Statistiques (accessibles dans la rubrique *Mon compte* :
+  - Nombre de deals postés
+  - Nombre de commentaires postés
+  - Note du deal posté le plus hot
 
 ## Fonctionnalités non disponibles :
-- Barre de recherche des promotions
 - Joli design
+- Page d'accueil
+- Parmi les statistiques (TP 8)
+  - Moyenne des notes des deals postés sur 1 an glissant
+  - Pourcentage de deals postés devenus hot
