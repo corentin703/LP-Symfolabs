@@ -19,6 +19,26 @@ class GoodPlanRepository extends ServiceEntityRepository
         parent::__construct($registry, GoodPlan::class);
     }
 
+    public function findBySearchString(string $searchString): array {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->andWhere('p.isDisabled = 0');
+
+        $queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->like('p.title', ':searchString'),
+            )
+            ->orWhere(
+                $queryBuilder->expr()->like('p.content', ':searchString'),
+            )
+            ->setParameter(':searchString', '%' . $searchString . '%')
+            ->orderBy('p.created_at', 'DESC')
+        ;
+
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllWithoutDisabled(): array
     {
         return $this->createQueryBuilder('g')

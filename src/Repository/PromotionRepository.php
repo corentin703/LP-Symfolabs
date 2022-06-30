@@ -7,6 +7,7 @@ use App\Entity\User;
 use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method Promotion|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +20,26 @@ class PromotionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Promotion::class);
+    }
+
+    public function findBySearchString(string $searchString): array {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->andWhere('p.isDisabled = 0');
+
+        $queryBuilder
+            ->andWhere(
+                $queryBuilder->expr()->like('p.title', ':searchString'),
+            )
+            ->orWhere(
+                $queryBuilder->expr()->like('p.content', ':searchString'),
+            )
+            ->setParameter(':searchString', '%' . $searchString . '%')
+            ->orderBy('p.created_at', 'DESC')
+            ;
+
+        return $queryBuilder
+            ->getQuery()
+            ->getResult();
     }
 
     public function findAllWithoutDisabled(): array

@@ -37,6 +37,20 @@ class PromotionController extends AbstractController
     }
 
     /**
+     * @Route("/search", name="promotion_search_ajax", methods={"GET"})
+     */
+    public function search(Request $request, PromotionRepository $promotionRepository): Response
+    {
+        $searchString = $request->query->get('searchString');
+
+        return $this->render('promotion/_list.html.twig', [
+            'promotions' => $searchString === null || $searchString === ''
+                ? $promotionRepository->findAll()
+                : $promotionRepository->findBySearchString($searchString),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="promotion_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface  $eventDispatcher): Response

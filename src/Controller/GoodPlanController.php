@@ -37,6 +37,20 @@ class GoodPlanController extends AbstractController
     }
 
     /**
+     * @Route("/search", name="good_plan_ajax", methods={"GET"})
+     */
+    public function search(Request $request, GoodPlanRepository $goodPlanRepository): Response
+    {
+        $searchString = $request->query->get('searchString');
+
+        return $this->render('good_plan/_list.html.twig', [
+            'good_plans' => $searchString === null || $searchString === ''
+                ? $goodPlanRepository->findAll()
+                : $goodPlanRepository->findBySearchString($searchString),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="good_plan_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher): Response
